@@ -1,8 +1,8 @@
 package task4;
 
 import java.util.concurrent.TimeUnit;
+import task4.resource.BackupTemperatureResourceImpl;
 import task4.resource.RouteeResourceImpl;
-import task4.resource.TemperatureResourceImpl;
 import task4.scheluder.ScheduledTaskRunner;
 import task4.service.RouteeAuthenticationServiceImpl;
 import task4.service.TemperatureSmsNotificationServiceImpl;
@@ -13,7 +13,7 @@ import task4.service.TemperatureSmsNotificationServiceImpl;
  *
  * @author Dmitrii_Mishenev
  */
-public class TemperatureNotificationApplication {
+public class BackupTemperatureNotificationApplication {
 
     public static void main(String[] args) {
         final int executionTimes = 10;
@@ -21,8 +21,10 @@ public class TemperatureNotificationApplication {
 
         // Создаём внешние ресурсы для HTTP вызовов.
         final RouteeResourceImpl routeeSmsResource = new RouteeResourceImpl();
-        final TemperatureResourceImpl temperatureResource = new TemperatureResourceImpl();
         final RouteeAuthenticationServiceImpl routeeAuthenticationService = new RouteeAuthenticationServiceImpl();
+
+        // Создаём резервную имплементацию клиента погоды
+        final BackupTemperatureResourceImpl temperatureResource = new BackupTemperatureResourceImpl();
 
         // Создаём сервис СМС оповещений о погоде в Греции
         TemperatureSmsNotificationServiceImpl temperatureSmsNotificationService
@@ -43,8 +45,6 @@ public class TemperatureNotificationApplication {
         // Создаём сервис СМС оповещений о погоде в Греции
         TemperatureSmsNotificationServiceImpl temperatureSmsNotificationService
                 = new TemperatureSmsNotificationServiceImpl();
-
-        // TODO сделать 2 примера "неудобности" сильного связывания: нельзя подменить зависимость + как тестить то?
 
         // Создаём шедулер
         ScheduledTaskRunner scheduledTaskRunner

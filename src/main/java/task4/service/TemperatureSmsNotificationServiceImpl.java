@@ -9,16 +9,21 @@ import task4.resource.TemperatureResourceImpl;
  *
  * @author Dmitrii_Mishenev
  */
-public class TemperatureSmsNotificationServiceImpl {
+public class TemperatureSmsNotificationServiceImpl implements TemperatureSmsNotificationService {
     private static final String CITY_NAME = "Thessaloniki";
     private static final String SENDER_NAME = "Dmitriy Mishenyov";
     private static final String LOW_TEMPERATURE_MSG = "Temperature less than 20C. ";
     private static final String HIGH_TEMPERATURE_MSG = "Temperature more than 20C. ";
-    private static final String RECEIVER_PHONE_NUMBER = "+306978745957";
+    private static final String RECEIVER_PHONE_NUMBER = "+79992292755";
     private static final double TEMPERATURE_LIMIT = 20.0;
     private static final String ROUTEE_APP_ID = "appId";
     private static final String ROUTEE_APP_SECRET = "secret";
 
+    /**
+     * Dependency Inversion Principle нарушен:
+     * Более абстрактный компонент системы
+     * Зависит от деталей реализации (Бизнес логика зависит от конкретных имплементаций ресурсов)
+     */
     private final RouteeResourceImpl routeeSmsResource;
     private final TemperatureResourceImpl temperatureResource;
     private final RouteeAuthenticationServiceImpl routeeAuthenticationService;
