@@ -35,22 +35,4 @@ public class TemperatureNotificationApplication {
         // Запускаем джобу с оповещениями о погоде в Греции
         scheduledTaskRunner.executeTask(temperatureSmsNotificationService::notifyBySms);
     }
-
-    public static void reserve(String[] args) {
-        final int executionTimes = 10;
-        final int executionPeriod = 10;
-
-        // Создаём сервис СМС оповещений о погоде в Греции
-        TemperatureSmsNotificationServiceImpl temperatureSmsNotificationService
-                = new TemperatureSmsNotificationServiceImpl();
-
-        // TODO сделать 2 примера "неудобности" сильного связывания: нельзя подменить зависимость + как тестить то?
-
-        // Создаём шедулер
-        ScheduledTaskRunner scheduledTaskRunner
-                = new ScheduledTaskRunner(executionTimes, executionPeriod, TimeUnit.MINUTES);
-
-        // Запускаем джобу с оповещениями о погоде в Греции
-        scheduledTaskRunner.executeTask(temperatureSmsNotificationService::notifyBySms);
-    }
 }

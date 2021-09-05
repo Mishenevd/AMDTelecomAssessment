@@ -9,7 +9,7 @@ import task4.resource.TemperatureResourceImpl;
  *
  * @author Dmitrii_Mishenev
  */
-public class TemperatureSmsNotificationServiceImpl implements TemperatureSmsNotificationService {
+public class TemperatureSmsNotificationServiceImpl {
     private static final String CITY_NAME = "Thessaloniki";
     private static final String SENDER_NAME = "Dmitriy Mishenyov";
     private static final String LOW_TEMPERATURE_MSG = "Temperature less than 20C. ";
@@ -28,7 +28,7 @@ public class TemperatureSmsNotificationServiceImpl implements TemperatureSmsNoti
     private final TemperatureResourceImpl temperatureResource;
     private final RouteeAuthenticationServiceImpl routeeAuthenticationService;
 
-    /* 1. Сервис заточен на работу с конкретными имплементациями ресурсов,
+    /* Сервис заточен на работу с конкретными имплементациями ресурсов,
      нельзя подменить без нарушения OCP. */
     public TemperatureSmsNotificationServiceImpl() {
         this.routeeSmsResource = new RouteeResourceImpl();
