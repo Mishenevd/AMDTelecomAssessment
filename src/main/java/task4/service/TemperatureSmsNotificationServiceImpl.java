@@ -1,34 +1,35 @@
 package task4.service;
 
 import task4.dto.SmsRequestDto;
-import task4.resource.RouteeResourceImpl;
-import task4.resource.TemperatureResourceImpl;
+import task4.resource.RouteeSmsResource;
+import task4.resource.TemperatureResource;
 
 /**
  * Service for checking actual temperature and sending SMS with temperature.
  *
  * @author Dmitrii_Mishenev
  */
-public class TemperatureSmsNotificationServiceImpl {
-    private static final String CITY_NAME = "Thessaloniki";
+public class TemperatureSmsNotificationServiceImpl implements TemperatureSmsNotificationService {
+    private static final String CITY_NAME = "Naberezhnye Chelny";
     private static final String SENDER_NAME = "Dmitriy Mishenyov";
     private static final String LOW_TEMPERATURE_MSG = "Temperature less than 20C. ";
     private static final String HIGH_TEMPERATURE_MSG = "Temperature more than 20C. ";
-    private static final String RECEIVER_PHONE_NUMBER = "+306978745957";
+    private static final String RECEIVER_PHONE_NUMBER = "+79991234567";
     private static final double TEMPERATURE_LIMIT = 20.0;
     private static final String ROUTEE_APP_ID = "appId";
     private static final String ROUTEE_APP_SECRET = "secret";
 
-    private final RouteeResourceImpl routeeSmsResource;
-    private final TemperatureResourceImpl temperatureResource;
-    private final RouteeAuthenticationServiceImpl routeeAuthenticationService;
+    private final RouteeSmsResource routeeSmsResource;
+    private final TemperatureResource temperatureResource;
+    private final RouteeAuthenticationService routeeAuthenticationService;
 
-    /* 1. Сервис заточен на работу с конкретными имплементациями ресурсов,
-     нельзя подменить без нарушения OCP. */
-    public TemperatureSmsNotificationServiceImpl() {
-        this.routeeSmsResource = new RouteeResourceImpl();
-        this.temperatureResource = new TemperatureResourceImpl();
-        this.routeeAuthenticationService = new RouteeAuthenticationServiceImpl();
+    /* IoC. */
+    public TemperatureSmsNotificationServiceImpl(RouteeSmsResource routeeSmsResource,
+                                                 TemperatureResource temperatureResource,
+                                                 RouteeAuthenticationService routeeAuthenticationService) {
+        this.routeeSmsResource = routeeSmsResource;
+        this.temperatureResource = temperatureResource;
+        this.routeeAuthenticationService = routeeAuthenticationService;
     }
 
     public void notifyBySms() {

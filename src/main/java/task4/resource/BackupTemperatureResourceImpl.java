@@ -5,7 +5,7 @@ package task4.resource;
  *
  * @author Dmitrii_Mishenev
  */
-public class ReserveTemperatureResourceImpl implements TemperatureResource {
+public class BackupTemperatureResourceImpl implements TemperatureResource {
 
     /**
      * Резервный метод для получения погоды.
