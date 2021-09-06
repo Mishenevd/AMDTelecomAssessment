@@ -1,6 +1,5 @@
 package task4.resource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.any;
 
 import org.junit.jupiter.api.Test;
@@ -8,8 +7,6 @@ import org.mockito.Mockito;
 import task4.dto.SmsRequestDto;
 import task4.http.HttpFacade;
 import task4.http.serialization.SmsRequestSerializer;
-
-import java.net.http.HttpRequest;
 
 /**
  * Unit test for {@link RouteeResourceImpl}
@@ -22,18 +19,6 @@ class RouteeResourceImplTest {
     private final SmsRequestSerializer smsRequestSerializer = Mockito.mock(SmsRequestSerializer.class);
     private final RouteeResourceImpl routeeResource =
             new RouteeResourceImpl(smsFacade, authenticationFacade, smsRequestSerializer);
-
-    @Test
-    void validCredentials_authenticate_shouldReturnAccessToken() {
-        String credentials = "123";
-        String expectedResponseToken = "456";
-        Mockito.doReturn(expectedResponseToken).when(authenticationFacade).exchange(any(HttpRequest.class));
-
-        String result = routeeResource.authenticate(credentials);
-
-        Mockito.verify(authenticationFacade).exchange(any());
-        assertEquals(expectedResponseToken, result);
-    }
 
     @Test
     void validSmsDto_sendSms_shouldSendSms() {

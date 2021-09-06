@@ -1,19 +1,20 @@
 package task4.resource;
 
+import java.net.URI;
+import java.net.http.HttpRequest;
 import task4.http.DefaultHttpBadResponseHandler;
 import task4.http.HttpFacade;
 import task4.http.HttpFacadeImpl;
 import task4.http.builder.UriBuilder;
 import task4.http.serialization.TemperatureResponseParser;
-
-import java.net.URI;
-import java.net.http.HttpRequest;
+import task4.iocframework.di.annotations.Component;
 
 /**
  * Resource for fetching current temperature in required city using OpenWeather service.
  *
  * @author Dmitrii_Mishenev
  */
+@Component(name = "temperatureResource")
 public class TemperatureResourceImpl implements TemperatureResource {
     private static final String REQUEST_URL = "https://api.openweathermap.org/data/2.5/weather";
     private static final String CITY_PARAM_NAME = "q";

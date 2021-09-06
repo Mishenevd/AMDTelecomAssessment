@@ -1,6 +1,9 @@
 package task4.service;
 
+import lombok.Getter;
 import task4.dto.SmsRequestDto;
+import task4.iocframework.di.annotations.Autowired;
+import task4.iocframework.di.annotations.Component;
 import task4.resource.RouteeSmsResource;
 import task4.resource.TemperatureResource;
 
@@ -9,6 +12,7 @@ import task4.resource.TemperatureResource;
  *
  * @author Dmitrii_Mishenev
  */
+@Component(name = "temperatureSmsNotificationServiceImpl")
 public class TemperatureSmsNotificationServiceImpl implements TemperatureSmsNotificationService {
     private static final String CITY_NAME = "Naberezhnye Chelny";
     private static final String SENDER_NAME = "Dmitriy Mishenyov";
@@ -19,17 +23,16 @@ public class TemperatureSmsNotificationServiceImpl implements TemperatureSmsNoti
     private static final String ROUTEE_APP_ID = "appId";
     private static final String ROUTEE_APP_SECRET = "secret";
 
-    private final RouteeSmsResource routeeSmsResource;
-    private final TemperatureResource temperatureResource;
-    private final RouteeAuthenticationService routeeAuthenticationService;
-
     /* IoC. */
-    public TemperatureSmsNotificationServiceImpl(RouteeSmsResource routeeSmsResource,
-                                                 TemperatureResource temperatureResource,
-                                                 RouteeAuthenticationService routeeAuthenticationService) {
-        this.routeeSmsResource = routeeSmsResource;
-        this.temperatureResource = temperatureResource;
-        this.routeeAuthenticationService = routeeAuthenticationService;
+    @Autowired(name = "routeeSmsResource")
+    private RouteeSmsResource routeeSmsResource;
+    @Autowired(name = "backupTemperatureResource")
+    @Getter
+    private TemperatureResource temperatureResource;
+    @Autowired(name = "routeeAuthenticationService")
+    private RouteeAuthenticationService routeeAuthenticationService;
+
+    public TemperatureSmsNotificationServiceImpl() {
     }
 
     public void notifyBySms() {

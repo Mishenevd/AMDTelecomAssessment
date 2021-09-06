@@ -1,10 +1,13 @@
 package task4.resource;
 
+import task4.iocframework.di.annotations.Component;
+
 /**
  * Резервный клиент для получения погоды.
  *
  * @author Dmitrii_Mishenev
  */
+@Component(name = "backupTemperatureResource")
 public class BackupTemperatureResourceImpl implements TemperatureResource {
 
     /**

@@ -2,26 +2,24 @@ package task4.service;
 
 import task4.exception.InvalidAuthCredentialsException;
 import task4.http.util.CredentialsBase64Encoder;
+import task4.iocframework.di.annotations.Component;
 import task4.resource.RouteeAuthResource;
-import task4.resource.RouteeResourceImpl;
 
 /**
  * Service for authentication in Routee CPaaS.
  *
  * @author Dmitrii_Mishenev
  */
+@Component(name = "routeeAuthenticationService")
 public class RouteeAuthenticationServiceImpl implements RouteeAuthenticationService {
-    private final RouteeAuthResource routeeResource;
     private final CredentialsBase64Encoder encoder;
 
     public RouteeAuthenticationServiceImpl(RouteeAuthResource routeeResource, CredentialsBase64Encoder encoder) {
-        this.routeeResource = routeeResource;
         this.encoder = encoder;
     }
 
     public RouteeAuthenticationServiceImpl() {
         this.encoder = new CredentialsBase64Encoder();
-        routeeResource = new RouteeResourceImpl();
     }
 
     /**
@@ -38,7 +36,7 @@ public class RouteeAuthenticationServiceImpl implements RouteeAuthenticationServ
 
         String encodedToken = encoder.encodeCredentials(appId, appSecret);
 
-        return routeeResource.authenticate(encodedToken);
+        return "";
     }
 
     private boolean isEmpty(String string) {
