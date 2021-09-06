@@ -25,7 +25,7 @@ public class TemperatureNotificationApplication {
     public static void main(String[] args) {
         final int executionTimes = 10;
         final int executionPeriod = 10;
-        boolean isBackup = args[0] == null;
+        boolean isBackup = args[0].equals("Backup");
 
         // Создаём внешние ресурсы для HTTP вызовов.
         final RouteeSmsResource routeeSmsResource = new RouteeResourceImpl();
@@ -37,6 +37,7 @@ public class TemperatureNotificationApplication {
         /*
         * Поскольку классы могут обращаться друг к другу опосредованно
         * через интерфейсы и абстрактные классы, механизм создания объектов тоже изменится.
+        * Кто будет ответственнен за создание & управление объектами?
         *  Для создания объектов потребуется применением таких шаблонов проектирования
         * как «Фабрика» и «Фабричный метод», либо через DI
         * */
