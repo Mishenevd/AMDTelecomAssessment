@@ -7,16 +7,16 @@ import static task4.http.Constants.BEARER_TOKEN_TEMPLATE;
 import static task4.http.Constants.CONTENT_TYPE;
 import static task4.http.Constants.FORM_URLENCODED;
 
+import java.net.URI;
+import java.net.http.HttpRequest;
+import java.util.function.Function;
 import task4.dto.SmsRequestDto;
 import task4.http.DefaultHttpBadResponseHandler;
 import task4.http.HttpFacade;
 import task4.http.HttpFacadeImpl;
 import task4.http.serialization.RouteeTokenParser;
 import task4.http.serialization.SmsRequestSerializer;
-
-import java.net.URI;
-import java.net.http.HttpRequest;
-import java.util.function.Function;
+import task4.service.TemperatureSmsNotificationServiceImpl;
 
 /**
  * High level abstraction for reducing complexity in HTTP communication.
@@ -24,6 +24,8 @@ import java.util.function.Function;
  * @author Dmitrii_Mishenev
  */
 public class RouteeResourceImpl implements RouteeSmsResource, RouteeAuthResource {
+    private static volatile RouteeResourceImpl SINGLETON;
+
     private static final String SMS_AUTH_BODY = "grant_type=client_credentials";
     private static final String SMS_AUTH_URL = "https://auth.routee.net/oauth/token";
     private static final String SMS_REQUEST_URL = "https://connect.routee.net/sms";
@@ -32,7 +34,19 @@ public class RouteeResourceImpl implements RouteeSmsResource, RouteeAuthResource
     private final HttpFacade<String> authenticationFacade;
     private final SmsRequestSerializer smsRequestSerializer;
 
-    public RouteeResourceImpl(HttpFacade<String> smsFacade,
+    public static RouteeResourceImpl getInstance() {
+        if (SINGLETON != null) {
+            return SINGLETON;
+        }
+        synchronized (TemperatureSmsNotificationServiceImpl.class) {
+            if (SINGLETON == null) {
+                SINGLETON = new RouteeResourceImpl();
+            }
+            return SINGLETON;
+        }
+    }
+
+    private RouteeResourceImpl(HttpFacade<String> smsFacade,
                               HttpFacade<String> authenticationFacade,
                               SmsRequestSerializer smsRequestSerializer) {
         this.smsFacade = smsFacade;
@@ -40,7 +54,7 @@ public class RouteeResourceImpl implements RouteeSmsResource, RouteeAuthResource
         this.smsRequestSerializer = smsRequestSerializer;
     }
 
-    public RouteeResourceImpl() {
+    private RouteeResourceImpl() {
         smsFacade = new HttpFacadeImpl<>(
                 Function.identity(),
                 new DefaultHttpBadResponseHandler());

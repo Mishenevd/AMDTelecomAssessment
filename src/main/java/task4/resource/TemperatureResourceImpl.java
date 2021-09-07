@@ -1,13 +1,12 @@
 package task4.resource;
 
+import java.net.URI;
+import java.net.http.HttpRequest;
 import task4.http.DefaultHttpBadResponseHandler;
 import task4.http.HttpFacade;
 import task4.http.HttpFacadeImpl;
 import task4.http.builder.UriBuilder;
 import task4.http.serialization.TemperatureResponseParser;
-
-import java.net.URI;
-import java.net.http.HttpRequest;
 
 /**
  * Resource for fetching current temperature in required city using OpenWeather service.
@@ -15,6 +14,8 @@ import java.net.http.HttpRequest;
  * @author Dmitrii_Mishenev
  */
 public class TemperatureResourceImpl implements TemperatureResource {
+    private static volatile TemperatureResourceImpl SINGLETON;
+
     private static final String REQUEST_URL = "https://api.openweathermap.org/data/2.5/weather";
     private static final String CITY_PARAM_NAME = "q";
     private static final String MEASURE_SYSTEM_PARAM_NAME = "units";
@@ -24,13 +25,25 @@ public class TemperatureResourceImpl implements TemperatureResource {
 
     private final HttpFacade<Double> httpFacade;
 
-    public TemperatureResourceImpl() {
+    public static TemperatureResourceImpl getInstance() {
+        if (SINGLETON != null) {
+            return SINGLETON;
+        }
+        synchronized (TemperatureResourceImpl.class) {
+            if (SINGLETON == null) {
+                SINGLETON = new TemperatureResourceImpl();
+            }
+            return SINGLETON;
+        }
+    }
+
+    private TemperatureResourceImpl() {
         httpFacade = new HttpFacadeImpl<>(
                 new TemperatureResponseParser(),
                 new DefaultHttpBadResponseHandler());
     }
 
-    public TemperatureResourceImpl(HttpFacade<Double> httpFacade) {
+    private TemperatureResourceImpl(HttpFacade<Double> httpFacade) {
         this.httpFacade = httpFacade;
     }
 

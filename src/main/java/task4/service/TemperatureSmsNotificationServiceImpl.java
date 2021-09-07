@@ -10,6 +10,8 @@ import task4.resource.TemperatureResource;
  * @author Dmitrii_Mishenev
  */
 public class TemperatureSmsNotificationServiceImpl implements TemperatureSmsNotificationService {
+    private static volatile TemperatureSmsNotificationServiceImpl SINGLETON;
+
     private static final String CITY_NAME = "Naberezhnye Chelny";
     private static final String SENDER_NAME = "Dmitriy Mishenyov";
     private static final String LOW_TEMPERATURE_MSG = "Temperature less than 20C. ";
@@ -23,8 +25,22 @@ public class TemperatureSmsNotificationServiceImpl implements TemperatureSmsNoti
     private final TemperatureResource temperatureResource;
     private final RouteeAuthenticationService routeeAuthenticationService;
 
-    /* IoC. */
-    public TemperatureSmsNotificationServiceImpl(RouteeSmsResource routeeSmsResource,
+    public static TemperatureSmsNotificationServiceImpl getInstance(RouteeSmsResource routeeSmsResource,
+                                                                    TemperatureResource temperatureResource,
+                                                                    RouteeAuthenticationService routeeAuthenticationService) {
+        if (SINGLETON != null) {
+            return SINGLETON;
+        }
+        synchronized (TemperatureSmsNotificationServiceImpl.class) {
+            if (SINGLETON == null) {
+                SINGLETON = new TemperatureSmsNotificationServiceImpl(routeeSmsResource,
+                        temperatureResource, routeeAuthenticationService);
+            }
+            return SINGLETON;
+        }
+    }
+
+    private TemperatureSmsNotificationServiceImpl(RouteeSmsResource routeeSmsResource,
                                                  TemperatureResource temperatureResource,
                                                  RouteeAuthenticationService routeeAuthenticationService) {
         this.routeeSmsResource = routeeSmsResource;

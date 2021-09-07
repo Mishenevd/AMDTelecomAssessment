@@ -11,17 +11,31 @@ import task4.resource.RouteeResourceImpl;
  * @author Dmitrii_Mishenev
  */
 public class RouteeAuthenticationServiceImpl implements RouteeAuthenticationService {
+    private static volatile RouteeAuthenticationServiceImpl SINGLETON;
+
     private final RouteeAuthResource routeeResource;
     private final CredentialsBase64Encoder encoder;
 
-    public RouteeAuthenticationServiceImpl(RouteeAuthResource routeeResource, CredentialsBase64Encoder encoder) {
+    public static RouteeAuthenticationServiceImpl getInstance() {
+        if (SINGLETON != null) {
+            return SINGLETON;
+        }
+        synchronized (RouteeAuthenticationServiceImpl.class) {
+            if (SINGLETON == null) {
+                SINGLETON = new RouteeAuthenticationServiceImpl();
+            }
+            return SINGLETON;
+        }
+    }
+
+    private RouteeAuthenticationServiceImpl(RouteeAuthResource routeeResource, CredentialsBase64Encoder encoder) {
         this.routeeResource = routeeResource;
         this.encoder = encoder;
     }
 
-    public RouteeAuthenticationServiceImpl() {
+    private RouteeAuthenticationServiceImpl() {
         this.encoder = new CredentialsBase64Encoder();
-        routeeResource = new RouteeResourceImpl();
+        routeeResource = RouteeResourceImpl.getInstance();
     }
 
     /**
