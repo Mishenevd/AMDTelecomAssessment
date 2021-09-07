@@ -1,10 +1,7 @@
 package task4;
 
 import java.util.concurrent.TimeUnit;
-import task4.resource.RouteeResourceImpl;
-import task4.resource.TemperatureResourceImpl;
 import task4.scheluder.ScheduledTaskRunner;
-import task4.service.RouteeAuthenticationServiceImpl;
 import task4.service.TemperatureSmsNotificationServiceImpl;
 
 /**
@@ -19,12 +16,7 @@ public class TemperatureNotificationApplication {
         final int executionTimes = 10;
         final int executionPeriod = 10;
 
-        // Создаём внешние ресурсы для HTTP вызовов.
-        final RouteeResourceImpl routeeSmsResource = new RouteeResourceImpl();
-        final TemperatureResourceImpl temperatureResource = new TemperatureResourceImpl();
-        final RouteeAuthenticationServiceImpl routeeAuthenticationService = new RouteeAuthenticationServiceImpl();
-
-        // Создаём сервис СМС оповещений о погоде в Греции
+        // Создаём сервис СМС оповещений
         TemperatureSmsNotificationServiceImpl temperatureSmsNotificationService
                 = new TemperatureSmsNotificationServiceImpl();
 
@@ -32,7 +24,7 @@ public class TemperatureNotificationApplication {
         ScheduledTaskRunner scheduledTaskRunner
                 = new ScheduledTaskRunner(executionTimes, executionPeriod, TimeUnit.MINUTES);
 
-        // Запускаем джобу с оповещениями о погоде в Греции
+        // Запускаем джобу с оповещениями о погоде
         scheduledTaskRunner.executeTask(temperatureSmsNotificationService::notifyBySms);
     }
 }
