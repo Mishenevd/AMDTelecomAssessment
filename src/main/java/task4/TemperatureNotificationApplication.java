@@ -13,11 +13,14 @@ import task4.service.TemperatureSmsNotificationServiceImpl;
 public class TemperatureNotificationApplication {
 
     public static void main(String[] args) {
+        // Стартуем фреймворк и формируем контекст
         Cache context = DIFramework.startApplication(TemperatureNotificationApplication.class);
 
+        // Получаем из контекста наш бин
         TemperatureSmsNotificationServiceImpl smsNotificationService =
                 context.getBean(TemperatureSmsNotificationServiceImpl.class);
 
+        // Вызываем метод
         System.out.println("Current temperature is: " + smsNotificationService
                 .getTemperatureResource().getTemperature("no matter"));
     }

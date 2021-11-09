@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 public class ClassLoaderUtil {
+
     /**
-     * Get all the classes for the input package
+     * Получить все классы, которые находятся в пакете
+     * @param packageName имя пакета
+     * @return массив классов, которые находятся в пакете
      */
     public static Class<?>[] getClasses(String packageName) throws ClassNotFoundException, IOException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -30,7 +33,7 @@ public class ClassLoaderUtil {
     /**
      * Get all the classes for the input package, inside the input directory
      */
-    public static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
+    private static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
         List<Class<?>> classes = new ArrayList<>();
         if (!directory.exists()) {
             return classes;

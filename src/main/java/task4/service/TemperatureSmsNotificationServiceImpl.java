@@ -25,20 +25,15 @@ public class TemperatureSmsNotificationServiceImpl implements TemperatureSmsNoti
 
     /* IoC. */
     @Autowired(name = "routeeSmsResource")
-    private final RouteeSmsResource routeeSmsResource;
+    private RouteeSmsResource routeeSmsResource;
     @Autowired(name = "backupTemperatureResource")
     @Getter
-    private final TemperatureResource temperatureResource;
+    private TemperatureResource temperatureResource;
     @Autowired(name = "routeeAuthenticationService")
-    private final RouteeAuthenticationService routeeAuthenticationService;
+    private RouteeAuthenticationService routeeAuthenticationService;
 
 
-    public TemperatureSmsNotificationServiceImpl(RouteeSmsResource routeeSmsResource,
-                                                 TemperatureResource temperatureResource,
-                                                 RouteeAuthenticationService routeeAuthenticationService) {
-        this.routeeSmsResource = routeeSmsResource;
-        this.temperatureResource = temperatureResource;
-        this.routeeAuthenticationService = routeeAuthenticationService;
+    public TemperatureSmsNotificationServiceImpl() {
     }
 
     public void notifyBySms() {

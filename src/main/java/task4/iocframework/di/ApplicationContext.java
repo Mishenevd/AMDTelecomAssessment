@@ -11,10 +11,16 @@ class ApplicationContext {
     private final Cache cache = Cache.GET_INSTANCE();
 
     void initializeContext(Class<?> mainClass) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+
+        // Получаем все классы из нашего пакета
         Class<?>[] classes = ClassLoaderUtil.getClasses(mainClass.getPackage().getName());
         Reflections reflections = new Reflections(mainClass.getPackage().getName());
+
+        // Получаем все классы, аннотированные @Component
         Set<Class<?>> types = reflections.getTypesAnnotatedWith(Component.class);
         for (Class<?> implementationClass : types) {
+            // Если интерфейс - кладем в наш контекст как Интерфейс <-> Реализация
+            // Если класс - кладем в наш контекст как Реализация <-> Реализация
             Class<?>[] interfaces = implementationClass.getInterfaces();
             if (interfaces.length == 0) {
                 cache.putInDi(implementationClass, implementationClass);
